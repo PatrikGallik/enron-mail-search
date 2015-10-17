@@ -7,7 +7,10 @@
   "license": "ISC",
   "dependencies": {
     "camel-case": "^1.1.2",
+    "express": "^4.13.3",
     "glob": "^5.0.15",
+    "jade": "^1.11.0",
+    "moment": "^2.10.6",
     "request": "^2.65.0"
   }
 }

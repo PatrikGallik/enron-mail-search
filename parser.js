@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var camelCase = require('camel-case');
 var glob = require('glob');
+var moment = require('moment');
 
 var dir = process.argv.splice(2)[0];
 
@@ -57,6 +58,8 @@ function parseFile(filename) {
   if (matchedToField) {
     parsedMail.to = matchedToField[1].replace(/\s/g, '');
   }
+
+  parsedMail.date = moment(parsedMail.date).format();
 
   return parsedMail;
 }

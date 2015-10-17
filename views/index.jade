@@ -1,0 +1,30 @@
+html
+    head
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+        link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat')
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker.min.css')
+        link(rel='stylesheet', href='/style.css')
+    body
+        .container
+            h3 Search conversations in enron emails
+
+            .search-row
+                span.search Search
+                input.form-control(type='text', placeholder='whatever', js-text)
+
+            .search-row
+                span.between Between
+                input.form-control.input-name(type='text', placeholder='anybody', js-name-1)
+                span.and and
+                input.form-control.input-name(type='text', placeholder='anybody', js-name-2)
+
+            .search-row
+                span.between From
+                input.form-control.input-date(type='text', placeholder='anytime', js-datepicker-1)
+                span.and to
+                input.form-control.input-date(type='text', placeholder='anytime', js-datepicker-2)
+
+            ul.list
+        script(src='//code.jquery.com/jquery-1.11.3.min.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js')
+        script(src='/app.js')
