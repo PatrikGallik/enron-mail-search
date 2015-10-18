@@ -5,7 +5,11 @@
   "main": "parser.js",
   "author": "Patrik Gallik",
   "license": "ISC",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
+    "body-parser": "^1.14.1",
     "camel-case": "^1.1.2",
     "express": "^4.13.3",
     "glob": "^5.0.15",
