@@ -4,6 +4,53 @@ var request = require('request');
 var fs = require('fs');
 var glob = require('glob');
 
+function createIndex() {
+  return new Promise((resolve, reject) => {
+    request({
+      method: 'DELETE',
+      url: 'http://localhost:9200/enron',
+      encoding: null
+    }, function(err, response, body) {
+      request({
+        method: 'PUT',
+        url: 'http://localhost:9200/enron',
+        encoding: null,
+        body: JSON.stringify({
+          "settings": {
+            "analysis": {
+              "analyzer": {
+                "email": {
+                  "tokenizer": "uax_url_email"
+                }
+              }
+            }
+          },
+          "mappings": {
+            "mail": {
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "analyzer": "email"
+                },
+                "to": {
+                  "type": "string",
+                  "analyzer": "email"
+                }
+              }
+            }
+          }
+        })
+      }, function(err, req, body) {
+        if (err) {
+          console.error('Error occured: ', err);
+          return reject(err);
+        }
+        resolve();
+      });
+    });
+  });
+}
+
 function importFile(files, index) {
   if (index >= files.length) {
     return;
@@ -25,6 +72,9 @@ function importFile(files, index) {
   });
 }
 
-glob(process.cwd() + '/export/*.json', {}, function(err, files) {
-  importFile(files, 0);
-});
+createIndex()
+  .then(() => {
+    glob(process.cwd() + '/export/*.json', {}, function(err, files) {
+      importFile(files, 0);
+    });
+  });

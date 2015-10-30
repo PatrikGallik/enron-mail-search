@@ -67,20 +67,7 @@ app.post('/search', function(req, res) {
   }
 
   if (req.body.name1) {
-    body.query.bool.must.push({ match: { from: req.body.name1 } });
-    //body.highlight.fields.from = {
-    //  highlight_query: {
-    //    bool: {
-    //      must: {
-    //        prefix: {
-    //          from: {
-    //            query: req.body.name1
-    //          }
-    //        }
-    //      }
-    //    }
-    //  }
-    //};
+    body.query.bool.must.push({ prefix: { from: req.body.name1 } });
   }
 
   if (req.body.name2) {

@@ -15,7 +15,7 @@ Clone the repository, run
 npm install
 ```
 
-Download and extract public Enron email dataset [here](https://www.cs.cmu.edu/~./enron/).
+Download and extract public Enron email dataset [here](https://www.cs.cmu.edu/~./enron/). Parse the dataset with:
 
 ```
 node parser.js /Users/admin/Downloads/maildir/
