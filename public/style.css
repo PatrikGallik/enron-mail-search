@@ -1,6 +1,9 @@
 body {
     -webkit-font-smoothing: antialiased;
     color: rgba(0,0,0,0.8);
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-size: 14px;
 }
 
 .container {
@@ -10,28 +13,39 @@ body {
 }
 
 h3 {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+    font-family: 'Open Sans';
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .list {
     list-style-type: none;
     margin: 20px 0;
     padding: 10px 0 0 0;
-    border-top: 1px solid rgba(0,0,0,0.2);
 }
 
 .list li {
     list-style-type: none;
     display: block;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 15px 0 20px 0;
+    border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 .list li em {
-    background: rgba(0,0,0,0.1);
     border-radius: 2px;
     color: rgba(0,0,0,1);
+    border: 1px solid #12C587;
     font-style: normal;
+    padding: 0 2px;
+    white-space: nowrap;
+}
+
+.item_head {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
 }
 
 .search-row {
@@ -39,6 +53,19 @@ h3 {
     align-items: center;
     flex-direction: row;
     margin: 10px 0;
+}
+
+.input-text {
+    width: 220px;
+}
+
+.raw-label {
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+.raw-label input {
+    margin-right: 5px;
 }
 
 .input-name {

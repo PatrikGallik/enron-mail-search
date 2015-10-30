@@ -2,31 +2,29 @@
 
 var request = require('request');
 var fs = require('fs');
+var glob = require('glob');
 
-var letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
-var index = 0;
-
-function importFile(index) {
-  if (index >= letters.length) {
+function importFile(files, index) {
+  if (index >= files.length) {
     return;
   }
 
-  var content = fs.readFileSync(process.cwd() + '/export/' + letters[index] + '.json', 'utf-8');
-
-  console.log('[debug] Performing bulk request for letter ' + letters[index] + ' performed');
+  console.log('[debug] Performing bulk request for file ' + files[index]);
 
   request({
     method: 'POST',
     url: 'http://localhost:9200/enron/mail/_bulk?pretty',
     encoding: null,
-    body: content
+    body: fs.readFileSync(files[index], 'utf8')
   }, function(error, request, body){
     if (error) {
-      console.error('[error] Error when performing bulk request for ' + letters[index] + ':', error);
+      console.error('[error] Error when performing bulk request for file ' + files[index] + ':', error);
     }
-    console.log('[debug] Bulk request for letter ' + letters[index] + ' performed');
-    setTimeout(importFile(index + 1));
+    console.log('[debug] Bulk request for letter ' + files[index] + ' performed');
+    setTimeout(importFile(files, index + 1));
   });
 }
 
-importFile(index);
+glob(process.cwd() + '/export/*.json', {}, function(err, files) {
+  importFile(files, 0);
+});

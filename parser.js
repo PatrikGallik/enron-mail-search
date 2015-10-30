@@ -27,9 +27,10 @@ var flags = [
   'X-FileName'
 ];
 
-function parseFile(filename) {
+var counter = 0;
+var data = [];
 
-  //console.log('[debug] Parsing file: ', filename)
+function parseFile(filename) {
 
   if (!fs.lstatSync(filename).isFile()) {
     return;
@@ -38,11 +39,21 @@ function parseFile(filename) {
   var content = fs.readFileSync(filename, 'utf-8');
   var parsedMail = {};
 
-  // Match content
+  // Match raw content
   var matchedContent = content.match(new RegExp('[\r\n]{3}((.|\r|\n)+)'));
   if (matchedContent) {
     content = content.substring(0, matchedContent.index);
-    parsedMail.content = matchedContent[1];
+    parsedMail.rawContent = matchedContent[1];
+  }
+
+  parsedMail.content = parsedMail.rawContent;
+
+  // Match content without forwarded, replies etc..
+  if (parsedMail.rawContent && parsedMail.rawContent.length) {
+    let matchedCleanContent = parsedMail.rawContent.match(new RegExp('^((([^\-]|\-[^\-]))+)-{6,}(.|\r|\n)*'));
+    if (matchedCleanContent) {
+      parsedMail.content = matchedCleanContent[1];
+    }
   }
 
   // Match other data
@@ -59,9 +70,25 @@ function parseFile(filename) {
     parsedMail.to = matchedToField[1].replace(/\s/g, '');
   }
 
+  // Format date to ISO
   parsedMail.date = moment(parsedMail.date).format();
 
   return parsedMail;
+}
+
+function saveFile(letter) {
+  var exportString = '';
+  counter++;
+
+  // Data to elastic json format
+  data.forEach((item, index) => {
+    exportString += '{"index":{"_id":"' + letter + '_' + counter + '_' + index + '"}}\n';
+    exportString += JSON.stringify(item) + '\n';
+  });
+
+  data = [];
+
+  fs.writeFileSync(process.cwd() + '/export/' + letter + '_' + counter + '.json', exportString);
 }
 
 'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
@@ -75,22 +102,17 @@ function parseFile(filename) {
 
     console.log('[debug] Files found for pattern: ', letter, files.length);
 
-    var data = [];
-
     files.forEach(file => {
       data.push(parseFile(file));
+      if (data.length > 3000) {
+        saveFile(letter);
+      }
     });
 
-    // Export to elastic formatted json
-    var exportString = '';
+    if (data.length) {
+      saveFile(letter);
+    }
 
-    data.forEach((item, index) => {
-      exportString += '{"index":{"_id":"' + letter + '_' + index + '"}}\n';
-      exportString += JSON.stringify(item) + '\n';
-    });
-
-    fs.writeFileSync(process.cwd() + '/export/' + letter + '.json', exportString);
-
-    console.log('[debug] Data written.');
+    console.log('[debug] Data written for pattern: ', letter);
   });
 });

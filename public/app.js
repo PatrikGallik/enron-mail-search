@@ -4,6 +4,7 @@
 
   var values = {
     text: '',
+    searchRaw: false,
     name1: '',
     name2: '',
     dateFrom: '',
@@ -24,11 +25,13 @@
       list.append(data.map(function(item) {
         return (
         '<li class=\'item\'>' +
+          '<div class=\'item_head\'>' +
           '<strong>Subject: </strong>' + item._source.subject + '<br>' +
           '<strong>From: </strong>' + item._source.from + '<br>' +
           '<strong>To: </strong>' + item._source.to + '<br>' +
           '<strong>Date: </strong>' + item._source.date + '<br><br>' +
           '' + (item.highlight ? item.highlight.content : item._source.content) +
+          '</div>' +
         '</li>');
       }).join(''));
     }
@@ -49,6 +52,8 @@
     search();
   });
 
+  $.fn.datepicker.defaults.defaultViewDate = { year: 2001, month: 0, day: 1};
+
   $('[js-datepicker-1]').datepicker().on('changeDate', function(e) {
     values.dateFrom = e.date;
     search();
@@ -58,5 +63,10 @@
     values.dateTo = e.date;
     search();
   });
+
+  $('[js-search-in-raw]').on('change', function() {
+    values.searchRaw = this.checked;
+    search();
+  })
 
 }(jQuery));

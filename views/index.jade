@@ -1,16 +1,20 @@
 html
     head
-        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
-        link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat')
+        title Email search
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css', type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300', rel='stylesheet', type='text/css')
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker.min.css')
         link(rel='stylesheet', href='/style.css')
     body
         .container
-            h3 Search conversations in enron emails
+            h3 Enron email search
 
             .search-row
                 span.search Search
-                input.form-control(type='text', placeholder='whatever', js-text)
+                input.form-control.input-text(type='text', placeholder='whatever', js-text)
+                label.raw-label
+                    input(type="checkbox", js-search-in-raw)
+                    | Search in raw content (forwarded, etc)
 
             .search-row
                 span.between Between

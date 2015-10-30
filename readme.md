@@ -1,19 +1,24 @@
-## Parser
+# Enron email search
 
-* Node v4.2.1
+[Read more](https://www.cs.cmu.edu/~./enron/) about the dataset. [What is Enron?](https://en.wikipedia.org/wiki/Enron)
 
-# How to run
+## Prerequisites
 
-Clone this repository, run
+* Node > 4.0
+* Downloaded enron email dataset
+
+## How to run
+
+Clone the repository, run
 
 ```
 npm install
 ```
 
-Download and extract public Enron email dataset [here](https://www.cs.cmu.edu/~./enron/)
+Download and extract public Enron email dataset [here](https://www.cs.cmu.edu/~./enron/).
 
 ```
-node parser.js '/Users/admin/Downloads/maildir/' #notice that the path is a string
+node parser.js /Users/admin/Downloads/maildir/
 ```
 
 This will create a bunch of .json files in `export` folder. Then, make sure that Elasticsearch is running on `localhost:9200` (by default) and run
@@ -22,4 +27,14 @@ This will create a bunch of .json files in `export` folder. Then, make sure that
 node import.js
 ```
 
-That's it!
+Now all json files are imported in elastic. To run search UI, run
+
+```
+npm start
+#OR
+node server.js
+```
+
+and navigate to `localhost:3000` in your web browser.
+
+Enjoy!
