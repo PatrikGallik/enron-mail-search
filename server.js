@@ -34,6 +34,21 @@ app.post('/search', function(req, res) {
 
   if (req.body.text) {
     if (req.body.searchRaw) {
+      body.query.bool.must.push({ match: { rawContent: req.body.text } });
+      body.highlight.fields.rawContent = {
+        highlight_query: {
+          bool: {
+            must: {
+              match: {
+                rawContent: {
+                  query: req.body.text
+                }
+              }
+            }
+          }
+        }
+      };
+    } else {
       body.query.bool.must.push({ match: { content: req.body.text } });
       body.highlight.fields.content = {
         highlight_query: {
@@ -48,26 +63,11 @@ app.post('/search', function(req, res) {
           }
         }
       };
-    } else {
-      body.query.bool.must.push({ match: { contentClean: req.body.text } });
-      body.highlight.fields.contentClean = {
-        highlight_query: {
-          bool: {
-            must: {
-              match: {
-                contentClean: {
-                  query: req.body.text
-                }
-              }
-            }
-          }
-        }
-      };
     }
   }
 
   if (req.body.name1) {
-    body.query.bool.must.push({ prefix: { from: req.body.name1 } });
+    body.query.bool.must.push({ match: { from: req.body.name1 } });
     //body.highlight.fields.from = {
     //  highlight_query: {
     //    bool: {

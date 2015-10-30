@@ -11,6 +11,24 @@
     dateTo: ''
   };
 
+  var Helpers = {
+    drawContent: function(item) {
+      if (item.highlight) {
+        return item.highlight.content || item.highlight.rawContent;
+      } else {
+        return item._source.content || item._source.rawContent;
+      }
+    },
+    formatDate: function(date) {
+      var parsedDate = new Date(date);
+      if (parsedDate) {
+        return parsedDate.toLocaleString();
+      } else {
+        return date;
+      }
+    }
+  };
+
   function search() {
     $.ajax('/search', {
       method: 'POST',
@@ -25,13 +43,13 @@
       list.append(data.map(function(item) {
         return (
         '<li class=\'item\'>' +
-          '<div class=\'item_head\'>' +
-          '<strong>Subject: </strong>' + item._source.subject + '<br>' +
-          '<strong>From: </strong>' + item._source.from + '<br>' +
-          '<strong>To: </strong>' + item._source.to + '<br>' +
-          '<strong>Date: </strong>' + item._source.date + '<br><br>' +
-          '' + (item.highlight ? item.highlight.content : item._source.content) +
-          '</div>' +
+        '<div class=\'item_head\'>' +
+        '<strong>Subject: </strong>' + item._source.subject + '<br>' +
+        '<strong>From: </strong>' + item._source.from + '<br>' +
+        '<strong>To: </strong>' + item._source.to + '<br>' +
+        '<strong>Date: </strong>' + Helpers.formatDate(item._source.date) + '<br><br>' +
+        '' + Helpers.drawContent(item) +
+        '</div>' +
         '</li>');
       }).join(''));
     }
@@ -52,7 +70,7 @@
     search();
   });
 
-  $.fn.datepicker.defaults.defaultViewDate = { year: 2001, month: 0, day: 1};
+  $.fn.datepicker.defaults.defaultViewDate = { year: 2001, month: 0, day: 1 };
 
   $('[js-datepicker-1]').datepicker().on('changeDate', function(e) {
     values.dateFrom = e.date;
