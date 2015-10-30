@@ -1,10 +1,10 @@
 {
-  "name": "information-retriveal-1",
+  "name": "enron-email-search",
   "version": "0.0.1",
   "description": "Parse Enron's email dumps and provide a simple search interface.",
-  "main": "parser.js",
+  "main": "server.js",
   "author": "Patrik Gallik",
-  "license": "ISC",
+  "license": "whatever",
   "scripts": {
     "start": "node server.js"
   },
